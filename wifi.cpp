@@ -1,41 +1,118 @@
-#include "WiFiS3.h"
-#include "arduino_secrets.h"
+#include <Arduino.h>
+#include <WiFi.h>
+#include <FirebaseESP32.h>
 
-char ssid[] = "Nombre";  // Nombre del WiFi
-char pass[] = "Pass";  // Contraseña WiFi
+#include <addons/TokenHelper.h>
 
-int status = WL_IDLE_STATUS;
+#include <addons/RTDBHelper.h>
 
-void setup() {
-  Serial.begin(9600);
-  while (!Serial) { // Espera que al monitor serial
-    ;
+#define WIFI_SSID "Andres_2.4"
+#define WIFI_PASSWORD "Alicia97"
+
+#define API_KEY "AIzaSyDJXhU7HYgyOMQrnZzd4CPgaiEDqX_Wvoc"
+
+#define DATABASE_URL "https://proyecto-calidad-de-aire-default-rtdb.firebaseio.com/" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
+
+#define USER_EMAIL "fluxa.andres@gmail.com"
+#define USER_PASSWORD "Proyecto01"
+
+FirebaseData fbdo;
+
+FirebaseAuth auth;
+FirebaseConfig config;
+
+unsigned long sendDataPrevMillis = 0;
+
+unsigned long count = 0;
+
+void setup()
+{
+
+  Serial.begin(115200);
+
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.print("Connecting to Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print(".");
+    delay(300);
   }
+  Serial.println();
+  Serial.print("Connected with IP: ");
+  Serial.println(WiFi.localIP());
+  Serial.println();
 
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("¡Comunicación con el módulo WiFi fallida!");
-    while (true);  // No continúa si no puede conectarse
-  }
+  Serial.printf("Firebase Client v%s\n\n", FIREBASE_CLIENT_VERSION);
 
-  String fv = WiFi.firmwareVersion();
-  if (fv < WIFI_FIRMWARE_LATEST_VERSION) {
-    Serial.println("Por favor, actualiza el firmware");
-  } // Comprueba la versión
+  config.api_key = API_KEY;
 
-  // Intenta conectarse a la red Wi-Fi
-  while (status != WL_CONNECTED) {
-    Serial.print("Intentando conectarse a la red: ");
-    Serial.println(ssid);
-    status = WiFi.begin(ssid, pass);
+  auth.user.email = USER_EMAIL;
+  auth.user.password = USER_PASSWORD;
 
-    // Espera 10 segundos antes de intentar de nuevo
-    delay(1000);
-  }
+  config.database_url = DATABASE_URL;
 
-  Serial.println("¡Conectado a la red Wi-Fi!");
-  IPAddress ip = WiFi.localIP();
-  Serial.println(ip);
+  config.token_status_callback = tokenStatusCallback;
+
+  Firebase.reconnectNetwork(true);
+
+  fbdo.setBSSLBufferSize(4096, 1024);
+
+  Firebase.begin(&config, &auth);
+
+  Firebase.setDoubleDigits(5);
+
 }
 
-void loop() {
+void loop()
+{
+
+  if (Firebase.ready() && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))
+  {
+    sendDataPrevMillis = millis();
+
+    Serial.printf("Set bool... %s\n", Firebase.setBool(fbdo, F("/test/bool"), count % 2 == 0) ? "ok" : fbdo.errorReason().c_str());
+
+    Serial.printf("Get bool... %s\n", Firebase.getBool(fbdo, FPSTR("/test/bool")) ? fbdo.to<bool>() ? "true" : "false" : fbdo.errorReason().c_str());
+
+    bool bVal;
+    Serial.printf("Get bool ref... %s\n", Firebase.getBool(fbdo, F("/test/bool"), &bVal) ? bVal ? "true" : "false" : fbdo.errorReason().c_str());
+
+    Serial.printf("Set int... %s\n", Firebase.setInt(fbdo, F("/test/int"), count) ? "ok" : fbdo.errorReason().c_str());
+
+    Serial.printf("Get int... %s\n", Firebase.getInt(fbdo, F("/test/int")) ? String(fbdo.to<int>()).c_str() : fbdo.errorReason().c_str());
+
+    int iVal = 0;
+    Serial.printf("Get int ref... %s\n", Firebase.getInt(fbdo, F("/test/int"), &iVal) ? String(iVal).c_str() : fbdo.errorReason().c_str());
+
+    Serial.printf("Set float... %s\n", Firebase.setFloat(fbdo, F("/test/float"), count + 10.2) ? "ok" : fbdo.errorReason().c_str());
+
+    Serial.printf("Get float... %s\n", Firebase.getFloat(fbdo, F("/test/float")) ? String(fbdo.to<float>()).c_str() : fbdo.errorReason().c_str());
+
+    Serial.printf("Set double... %s\n", Firebase.setDouble(fbdo, F("/test/double"), count + 35.517549723765) ? "ok" : fbdo.errorReason().c_str());
+
+    Serial.printf("Get double... %s\n", Firebase.getDouble(fbdo, F("/test/double")) ? String(fbdo.to<double>()).c_str() : fbdo.errorReason().c_str());
+
+    Serial.printf("Set string... %s\n", Firebase.setString(fbdo, F("/test/string"), "Hello World!") ? "ok" : fbdo.errorReason().c_str());
+
+    Serial.printf("Get string... %s\n", Firebase.getString(fbdo, F("/test/string")) ? fbdo.to<const char *>() : fbdo.errorReason().c_str());
+
+    FirebaseJson json;
+
+    if (count == 0)
+    {
+      json.set("value/round/" + String(count), F("cool!"));
+      json.set(F("vaue/ts/.sv"), F("timestamp"));
+      Serial.printf("Set json... %s\n", Firebase.set(fbdo, F("/test/json"), json) ? "ok" : fbdo.errorReason().c_str());
+    }
+    else
+    {
+      json.add(String(count), "smart!");
+      Serial.printf("Update node... %s\n", Firebase.updateNode(fbdo, F("/test/json/value/round"), json) ? "ok" : fbdo.errorReason().c_str());
+    }
+
+    Serial.println();
+
+
+    count++;
+  }
 }
