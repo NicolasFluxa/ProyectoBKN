@@ -1,8 +1,8 @@
 #include "WiFiS3.h"
 #include "arduino_secrets.h"
 
-char ssid[] = SECRET_SSID;  // Nombre del WiFi
-char pass[] = SECRET_PASS;  // Contraseña WiFi
+char ssid[] = "Nombre";  // Nombre del WiFi
+char pass[] = "Pass";  // Contraseña WiFi
 
 int status = WL_IDLE_STATUS;
 
