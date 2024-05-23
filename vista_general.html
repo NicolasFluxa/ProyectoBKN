@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styleVistaGeneral.css">
+    <script src="https://kit.fontawesome.com/227c4970dc.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>vista general</title>
+</head>
+<body>
+    <div class="menu">
+        <i class="fa-solid fa-bars"></i>
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="casa" name="home-sharp"></ion-icon>
+                <span>AirQuality</span>
+            </div>
+        </div>
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a id="pm10" href="pm10.html">
+                        <i class="fa-solid fa-star-of-life"></i>
+                        <span>Pm-10</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="pm2-5.html">
+                        <i class="fa-solid fa-asterisk"></i>
+                        <span>Pm-2.5</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="Temperatura.html">
+                        <i class="fa-solid fa-temperature-high"></i>
+                        <span>Temperatura</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="Ozono.html">
+                        <i class="fa-solid fa-sun-plant-wilt"></i>
+                        <span>Ozono</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="Humedad.html">
+                        <i class="fa-solid fa-droplet"></i>
+                        <span>Humedad</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="CO2.html">
+                        <i class="fa-solid fa-smog"></i>
+                        <span>Dioxido de Carbono</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="linea"></div>
+
+        <div class="modo-oscuro">
+            <div class="info">
+                <i class="fa-solid fa-moon"></i>
+                <span>Dark Mode</span>
+            </div>
+            <div class="switch">
+                <div class="base">
+                    <div class="circulos">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="usuario">
+            <img src="figuras/image.png" alt="usuario">
+            <div class="info-usuario">
+                <div class="nombre-email">
+                    <span class="nombre">pepito31</span>
+                    <span class="email">pepito31@gmail.com</span>
+                </div>
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </div>
+        </div>
+        </div>
+
+
+    </div>
+
+    <main class="body">
+        <h1>Graficos</h1>
+        <div class="graficos">
+            <div class="pm10">
+
+            </div>
+            <div class="pm25"></div>
+            <div class="temperatura"></div>
+            <div class="ozono"></div>
+            <div class="humedad"></div>
+            <div class="co2"></div>
+        </div>
+        
+    </main>
+
+    <script src="vista-general.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

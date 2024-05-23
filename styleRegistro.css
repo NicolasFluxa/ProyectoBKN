@@ -1,0 +1,132 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+    height: 100vh;
+}
+
+.formulario {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: white;
+    border: 2px solid;
+    border-radius: 10px;
+    border-color: black;
+}
+
+.Logo {
+    height: 104px;
+    width: 170px;
+    padding: 40px;
+    position: relative;
+}
+
+@media (max-width: 1300px) {
+    .Logo {
+        display: none; 
+    }
+    .Logo2 {
+        position: absolute;
+        height: 60px;
+        width: auto;
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1300px) {
+    .Logo {
+        height: 150px;
+        width: auto;
+    }
+    .Logo2 {
+        display: none;
+    }
+}
+
+.formulario h1 {
+    text-align: center;
+    padding: 0 0 20px 0;
+    border-bottom: 1px solid white;
+}
+
+.formulario form {
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+form .Registro {
+    position: relative;
+    border-bottom: 2px solid #adadad;
+    margin: 30px 0;
+}
+
+.Registro input {
+    width: 100%;
+    padding: 0 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.Registro label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    color: #adadad;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.4s;
+}
+
+.Registro span::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: red;
+    transition: 0.4s;
+}
+
+.Registro input:focus ~ label,
+.Registro input:valid ~ label {
+    top: -5px;
+    color: black;
+}
+
+.Registro input:focus ~ span::before,
+.Registro input:focus ~ span::before {
+    width: 100%;
+}
+
+.Politicas input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+input[type="checkbox"]{
+    position: relative;
+}
+
+form input[type="submit"] {
+    position: relative;
+    left: -10px;
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    background-color: #E22319;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.Politicas {
+    margin-top: 10px; /* Subido el margen superior */
+}
