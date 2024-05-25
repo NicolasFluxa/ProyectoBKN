@@ -96,6 +96,6 @@ void loop()
     Firebase.pushFloat(fbdo, pathTemperatura, temperatura);
 
     Firebase.pushInt(fbdo, pathMQ135, mq135_value);
-
+    delay(60000);
   }
 }
